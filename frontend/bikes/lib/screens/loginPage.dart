@@ -128,23 +128,11 @@ class _LoginPageState extends State<LoginPage> {
                           email: email.text,
                           password: password.text,
                         );
-                        print("token is ${response.token}");
-                        if ((response.token) == null) {
+
                           setState(() {
                             _load = false;
                           });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text((response.user.firstName),),
-                              backgroundColor: Colors.red,
-                              dismissDirection: DismissDirection.up,
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
-                        } else {
-                          setState(() {
-                            _load = false;
-                          });
+                          print(response);
                           // BlocProvider(
                           //     create: (context) => AccountCubit(
                           //       currentUserService: CurrentUserService(),
@@ -178,11 +166,23 @@ class _LoginPageState extends State<LoginPage> {
                               .push(MaterialPageRoute(builder: (context) {
                             return HomePage( response,);
                           }));
-                        }
-                      } on TimeoutException catch (e){
+
+                      }  catch (e){
                         setState(() {
                           _load = false;
                         });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          // ignore: prefer_const_constructors
+                          SnackBar(
+                            content:  Text(e.toString()),
+                            backgroundColor: const Color.fromARGB(
+                                255, 246, 7, 7),
+                            dismissDirection: DismissDirection.up,
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+
+
                       }
                     },
                     child: Text("Log In"),

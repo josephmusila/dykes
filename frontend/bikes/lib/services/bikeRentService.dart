@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:bikes/models/bikesDataModel.dart';
 import 'package:bikes/services/authService.dart';
 import "package:http/http.dart" as http;
 
@@ -29,17 +32,22 @@ class BikeRentalService {
 
     var res=await request.send();
     var response = await http.Response.fromStream(res);
-
-    return response;
+    // print(response.body);
+    return response.body;
   }
 
-  Future<dynamic> listAllBikes() async{
-    var response= await http.get(listAllBikesUrl);
-    if(response.statusCode ==200){
-      print(response.body);
-    }else{
-      print(response.statusCode);
+  Future<List<BikesDataModel>> listAllBikes() async{
+      List<BikesDataModel> bikesData=[];
+      try {
+        var response= await http.get(listAllBikesUrl);
+        // print(bikesDataModelFromJson(json.decode(response.body)));
+        // return bikesDataModelFromJson(json.decode(response.body));
+        bikesData=bikesDataModelFromJson(response.body);
+        return bikesData;
+      }catch (e){
+        throw Future.error(e);
     }
+
   }
 
   Future<dynamic> newRental() async{

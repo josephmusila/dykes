@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../config/themeColors.dart';
 import '../../screens/loginPage.dart';
 import '../../screens/registerPage.dart';
 
@@ -19,9 +20,10 @@ class WelcomeText extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                username == null ? "Hello" : "Hello ${username}",
-                style: TextStyle(
+                username == null ? "Hello" : "Hello $username",
+                style: const TextStyle(
                   fontSize: 16,
+                  color: AppColors.mainColor
                 ),
               ),
             ),

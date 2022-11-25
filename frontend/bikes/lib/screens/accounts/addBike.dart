@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -60,23 +62,23 @@ class _AddBikeState extends State<AddBike> {
                 }
                 return null;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Bike Description",
                 hintText: "Bike Description",
-                labelStyle: const TextStyle(color: Colors.white),
+                labelStyle: TextStyle(color: Colors.white),
                 hintStyle:
-                    const TextStyle(color: Color.fromARGB(204, 110, 101, 101)),
-                contentPadding: const EdgeInsets.symmetric(
+                    TextStyle(color: Color.fromARGB(204, 110, 101, 101)),
+                contentPadding: EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 10.0),
-                border: const OutlineInputBorder(
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6.0)),
                 ),
-                enabledBorder: const OutlineInputBorder(
+                enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                       color: Color.fromARGB(211, 246, 245, 245), width: 1.0),
                   borderRadius: BorderRadius.all(Radius.circular(6.0)),
                 ),
-                focusedBorder: const OutlineInputBorder(
+                focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                       color: Color.fromARGB(213, 3, 35, 220), width: 2.0),
                   borderRadius: BorderRadius.all(Radius.circular(6.0)),
@@ -155,15 +157,29 @@ class _AddBikeState extends State<AddBike> {
             const Divider(color: Colors.white),
             ElevatedButton(
                 onPressed: () async {
-                  var response = await bikeRentalService.addBike(
-                    owner: widget.ownerId,
-                    name: name.text,
-                    description: description.text,
-                    price: price.text,
-                    image: imageFile.path,
-                  );
-                  print(response);
+                  try {
+                    var response = await bikeRentalService.addBike(
+                      owner: widget.ownerId,
+                      name: name.text,
+                      description: description.text,
+                      price: price.text,
+                      image: imageFile.path,
+                    );
+                    print(json.decode(response));
+                  }catch (e){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      // ignore: prefer_const_constructors
+                      SnackBar(
+                        content:  Text(e.toString()),
+                        backgroundColor: const Color.fromARGB(255, 253, 2, 30),
+                        dismissDirection: DismissDirection.up,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  }
                 },
+
+
                 child: const Text("Add Bike"))
           ],
         ),

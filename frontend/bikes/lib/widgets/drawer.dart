@@ -77,7 +77,7 @@ class NavDrawer extends StatelessWidget {
                     : Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
-                            return user?.user.accountType == "Renter"? RenterAccount(user: user!) : CustomerAccount();
+                            return user?.user.accountType == "Renter"? RenterAccount(user: user!) : CustomerAccount(user!);
                           },
                         ),
                       );

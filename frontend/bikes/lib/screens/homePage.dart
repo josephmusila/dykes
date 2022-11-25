@@ -14,17 +14,13 @@ import '../widgets/homeWidgets/welcomeText.dart';
 class HomePage extends StatefulWidget {
   UserDataModel? user;
 
-
-  HomePage([ this.user]);
+  HomePage([this.user]);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,23 +36,37 @@ class _HomePageState extends State<HomePage> {
           height: double.maxFinite,
           width: double.maxFinite,
           child: ListView(
-              padding: const EdgeInsets.only(top: 0),
-              children: [
-            WelcomeText(
-              username: widget.user == null? "":widget.user?.user.lastName as String ,
-            ),
-            QuickLinks(),
-            SearchBike(),
-            BlocProvider(
-              create: (context) => BikesDataCubits(
-                bikeRentalService: BikeRentalService(),
+            padding: const EdgeInsets.only(top: 0),
+            children: [
+              WelcomeText(
+                username: widget.user == null
+                    ? ""
+                    : widget.user?.user.lastName as String,
               ),
-              child: SliderCubitLogics(),
-            ),
-            ElevatedButton(onPressed: () async{
-
-            }, child: Text("Dtaa"),)
-          ]),
+              const QuickLinks(),
+              const SearchBike(),
+              BlocProvider(
+                create: (context) => BikesDataCubits(
+                  bikeRentalService: BikeRentalService(),
+                ),
+                child: Column(
+                  children: const [
+                    Text("Featured Bikes",style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.deepOrange,
+                    ),),
+                    SliderCubitLogics(),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  // BlocProvider.of<BikesDataCubits>(context).searchBike("mountain");
+                },
+                child: const Text("Data"),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -7,7 +7,7 @@ class QuickLinks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 170,
+      height: 200,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Column(
         children: [

@@ -1,7 +1,12 @@
+import 'package:bikes/models/userModel.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/accountsWidget/profileCard.dart';
+
 class CustomerAccount extends StatelessWidget {
-  const CustomerAccount({Key? key}) : super(key: key);
+  UserDataModel user;
+
+  CustomerAccount(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +15,7 @@ class CustomerAccount extends StatelessWidget {
         width: double.maxFinite,
         child: ListView(
           children: [
-              Text("Customer")
+            ProfileCard(userDataModel: user,)
           ],
         ),
       ),

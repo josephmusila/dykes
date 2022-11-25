@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../cubits/dataCubits.dart';
+import '../../models/bikesDataModel.dart';
 
 class SearchBike extends StatefulWidget {
   const SearchBike({Key? key}) : super(key: key);
@@ -8,12 +12,17 @@ class SearchBike extends StatefulWidget {
 }
 
 class _SearchBikeState extends State<SearchBike> {
+
+  List<BikesDataModel> bikes=[];
+
   @override
   Widget build(BuildContext context) {
+
+
     return Container(
       margin: const EdgeInsets.all(5),
       height: 70,
-      decoration: BoxDecoration(
+      decoration:const  BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(
           20,
         )),
@@ -28,10 +37,11 @@ class _SearchBikeState extends State<SearchBike> {
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   width: double.maxFinite,
-                  child: const TextField(
+                  child:  TextField(
                     // controller: textController,
                     textCapitalization: TextCapitalization.words,
-                    // onChanged: searchWorkerbyQuery,
+                    // onChanged:BlocProvider.of<BikesDataCubits>(context).searchBike,
+
                     decoration: InputDecoration(
                       labelText: "Search bikes by name or location",
                       labelStyle: TextStyle(
@@ -67,4 +77,14 @@ class _SearchBikeState extends State<SearchBike> {
       ),
     );
   }
+  // void searchBike(String query){
+  //   // final bikesList=bikesData.where((bike){
+  //     final bikeName=bike.name.toLowerCase();
+  //     final input=query.toLowerCase();
+  //     return bikeName.contains(input);
+  //   }).toList();
+  //   print(bikesList);
+  //   bikes =bikesList;
+  // }
+
 }

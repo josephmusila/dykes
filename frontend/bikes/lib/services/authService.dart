@@ -17,7 +17,7 @@ Future<void> main() async {
 
 class BaseUrl {
   //local ip for dev purposes
-  final baseUrl = "http://192.168.43.87:8000/api/";
+  final baseUrl = "http://169.254.177.161:8000/api/";
 
   String url() {
     return baseUrl;
@@ -71,15 +71,19 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    var response = await http.post(loginUrl, body: {
-      "email": email,
-      "password": password,
-    }).timeout(const Duration(seconds: 30));
-    token = jsonDecode(response.body)["token"];
+    try {
+      var response = await http.post(loginUrl, body: {
+        "email": email,
+        "password": password,
+      }).timeout(const Duration(seconds: 30));
+      token = jsonDecode(response.body)["token"];
 
-    // getUser(token);
+      return UserDataModel.fromJson(json.decode(response.body));
+    }catch (e){
+      print(e);
+      return Future.error(e);
 
-    return UserDataModel.fromJson(json.decode(response.body));
+    }
   }
 
   Future<dynamic?> getUser() async {

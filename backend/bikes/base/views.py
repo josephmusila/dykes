@@ -3,7 +3,8 @@ from . import services,authentication
 from . import serializers as user_serializer
 from .models import User,Bike,Rentals
 from rest_framework import views,response,exceptions,permissions,generics        
-from django.db.models import Q        
+from django.db.models import Q   
+     
 # Create your views here.
 
 

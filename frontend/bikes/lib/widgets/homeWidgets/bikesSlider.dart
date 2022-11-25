@@ -2,20 +2,17 @@
 
 import 'package:bikes/cubits/dataCubits.dart';
 import 'package:bikes/cubits/dataStates.dart';
+import 'package:bikes/models/bikesDataModel.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomImageSlider extends StatefulWidget {
-  CustomImageSlider({Key? key}) : super(key: key);
-
   @override
   State<CustomImageSlider> createState() => _CustomImageSliderState();
 }
 
 class _CustomImageSliderState extends State<CustomImageSlider> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,6 +63,19 @@ class _CustomImageSliderState extends State<CustomImageSlider> {
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
                               ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 5,
+                          right: 5,
+                          child: Text(
+                            "Ksh ${bikes[index].price}/Day",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.deepOrange,
+                              fontWeight: FontWeight.bold,
+                              backgroundColor: Colors.white.withOpacity(0.7)
                             ),
                           ),
                         ),

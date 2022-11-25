@@ -1,4 +1,5 @@
 import 'package:bikes/cubits/dataStates.dart';
+import 'package:bikes/models/bikesDataModel.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 
 import '../services/bikeRentService.dart';
@@ -12,18 +13,21 @@ class BikesDataCubits extends Cubit<BikesData>{
     emit(BikesDataLoadingState());
   }
 
-  late final bikesData;
+  late final List<BikesDataModel> bikesData;
+  List<BikesDataModel> searchedBike=[];
 
   void getAllBikesData() async{
     try{
       emit(BikesDataLoadingState());
       bikesData=await bikeRentalService.listAllBikes();
-      print(bikesData);
+      // print(bikesData);
       emit(BikesDataLoadedState(data: bikesData));
 
     }catch(exception){
-      print(exception);
+
       emit(BikesDataErrorState());
     }
   }
+
+
 }
