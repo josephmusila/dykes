@@ -14,7 +14,7 @@ class BikesDataCubits extends Cubit<BikesData>{
   }
 
   late final List<BikesDataModel> bikesData;
-  List<BikesDataModel> searchedBike=[];
+  // List<BikesDataModel> searchedBike=[];
 
   void getAllBikesData() async{
     try{
@@ -25,9 +25,33 @@ class BikesDataCubits extends Cubit<BikesData>{
 
     }catch(exception){
 
-      emit(BikesDataErrorState());
+      emit(BikesDataErrorState(exception.toString()));
     }
   }
 
+  void searchBike(String query) async{
+    try{
+      emit(BikesDataLoadingState());
+      bikesData=await bikeRentalService.searchBike(query);
+
+      if(bikesData !=null){
+        emit(BikesDataLoadedState(data: bikesData));
+      }
+      print("hello");
+
+    }catch (e){
+      emit(BikesDataErrorState(e.toString()));
+    }
+
+  }
+void searchBikeList(String query){
+  final bikesList=bikesData.where((bike){
+    final bikeName=bike.name.toLowerCase();
+    final input=query.toLowerCase();
+    return bikeName.contains(input);
+  }).toList();
+
+
+}
 
 }

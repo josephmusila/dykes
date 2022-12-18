@@ -65,15 +65,23 @@ class Bike(models.Model):
     price=models.CharField(max_length=500)
     image=models.ImageField(upload_to="uploads",blank=True,null=True)
     owner=models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    rent_status=models.CharField(max_length=100)
 
 
 
 class Rentals(models.Model):
     bike=models.ForeignKey(Bike,on_delete=models.DO_NOTHING)
-    
+    owner=models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name="owner")
     customer=models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name="customer")
-    date_of_renting=models.DateField()
-    rent_status=models.CharField(max_length=100)
+    date_of_renting=models.DateField(auto_now_add=True,null=True,blank=True)
+    
     date_of_return=models.DateField()
     paid=models.BooleanField(default=False)
+
+class RepairServices(models.Model):
+    owner=models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    issue=models.TextField(max_length=500)
+    bike=models.ForeignKey(Bike,on_delete=models.DO_NOTHING)
+    date=models.DateField(auto_now_add=True)
+    status=models.CharField(max_length=20,blank=True,null=True)
 

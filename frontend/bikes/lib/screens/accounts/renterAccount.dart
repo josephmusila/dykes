@@ -22,7 +22,32 @@ class _RenterAccountState extends State<RenterAccount> {
         width: double.maxFinite,
         child: ListView(
           children: [
-            ProfileCard(userDataModel: widget.user,),
+            ProfileCard(
+              userDataModel: widget.user,
+            ),
+            const Divider(
+              color: Colors.black,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "Update Account",
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    "Delete Account",
+                  ),
+                )
+              ],
+            ),
             const Divider(color: Colors.black,),
             ElevatedButton(
               onPressed: () {

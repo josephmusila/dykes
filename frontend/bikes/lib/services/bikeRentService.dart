@@ -6,8 +6,8 @@ import "package:http/http.dart" as http;
 
 Future<void> main() async {
   BikeRentalService bikeRentalService = BikeRentalService();
-  // bikeRentalService.addBike(description: "some description",image: "jdjfjd",name: "name",owner: "1",price: "300");
-  bikeRentalService.newRental();
+
+  bikeRentalService.searchBike("Mountain");
 }
 
 
@@ -15,6 +15,7 @@ class BikeRentalService {
   final addBikeUrl = Uri.parse("${BaseUrl().baseUrl}bikes/add");
   final listAllBikesUrl=Uri.parse("${BaseUrl().baseUrl}bikes/list");
   final rentBikeUrl=Uri.parse("${BaseUrl().baseUrl}rentals/new");
+  final searchBikeUrl=Uri.parse("${BaseUrl().baseUrl}bikes/search");
 
 
   Future<dynamic> addBike(
@@ -62,5 +63,15 @@ class BikeRentalService {
 
     print(response.body);
     return response;
+  }
+
+  Future<List<BikesDataModel>> searchBike(String query) async{
+   try{
+     var response = await http.get(Uri.parse("${BaseUrl().baseUrl}bikes/search/$query"));
+     print(bikesDataModelFromJson(response.body));
+     return bikesDataModelFromJson(response.body);
+   }catch (e){
+     throw Future.error(e);
+   }
   }
 }

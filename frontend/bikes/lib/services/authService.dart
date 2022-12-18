@@ -10,9 +10,7 @@ import '../models/userModel.dart';
 
 Future<void> main() async {
   AuthService authservice = AuthService();
-  // var response =
-  //     await authservice.login(email: "leah@gmail.com", password: "1234");
-  // print(json.decode(response));
+
 }
 
 class BaseUrl {

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from . import services,authentication
 from . import serializers as user_serializer
-from .models import User,Bike,Rentals
+from .models import User,Bike,Rentals,RepairServices
 from rest_framework import views,response,exceptions,permissions,generics        
 from django.db.models import Q   
      
@@ -107,10 +107,46 @@ class RentalsView(generics.ListAPIView):
         # print( kwargs['search'])
         # AddBike.queryset=Bike.objects.filter(Q(location__icontains=kwargs['search']))
         RentalsView.queryset=Rentals.objects.all()
-        data=self.serializer_class(data=data)                                         
+        # data=self.serializer_class(data=data)                                         
         
-        return self.list(request={"request":data}, *args, **kwargs) 
+        return self.list(request={"request":request}, *args, **kwargs) 
 
     def getData(request,self):
         info = self.post(self,request)
         return info
+
+class RepairServicesView(views.APIView):
+    serializer_class=user_serializer.RepairServiceSerializer
+    queryset=RepairServices.objects.all()
+
+    def post(self,request):
+        data=request.data
+        customer=data["customer"]
+        bike=data["bike"]
+
+        ownership=Bike.objects.filter(owner__id=customer)
+        if len(ownership) == 0:
+            return response.Response({"ownership_error":"Only the owner can ask for repair of this bike"})
+        else:   
+        
+            serializer=user_serializer.RepairServiceSerializer(data=data,many=False)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return response.Response(serializer.data)
+
+
+class SearchBike(generics.ListAPIView):
+    serializer_class=user_serializer.BikeSerializer
+    queryset=Bike.objects.all()
+    allowed_methods=["POST","GET"]
+
+    def get(self, request, *args, **kwargs):
+        SearchBike.queryset=Bike.objects.filter(Q(name__icontains=kwargs['search']))
+        return self.list(request, *args, **kwargs)
+
+class GetLocations(views.APIView):
+    
+
+    def get():
+        locations=[]
+        

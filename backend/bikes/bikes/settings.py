@@ -25,6 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t)g&3jkc(d5x7-%cxrd(-$tyfh-i0y5^2*oa(i2dy+l2!hm9%d'
 JWT_SECRET = "bikeskey"
 
+
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -32,9 +35,11 @@ ALLOWED_HOSTS = ['*']
 REST_USE_JWT = True
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
+    'django_forest',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

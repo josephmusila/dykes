@@ -62,12 +62,14 @@ class RentalSerializer(serializers.ModelSerializer):
 
     customer = serializers.PrimaryKeyRelatedField(
         queryset=models.User.objects.all())
+    owner = serializers.PrimaryKeyRelatedField(
+        queryset=models.User.objects.all())
     bike = serializers.PrimaryKeyRelatedField(
         queryset=models.Bike.objects.all())
 
     class Meta:
         model = Rentals
-        fields = ('id', "customer", "bike", "date_of_renting",
+        fields = ('id', "customer", "owner","bike", "date_of_renting",
                   "rent_status", "date_of_return", "paid")
         depth = 2
 
@@ -76,3 +78,13 @@ class RentalSerializer(serializers.ModelSerializer):
         response['bike'] = BikeSerializer(instance.bike).data
         response['client'] = UserSerializer(instance.customer).data
         return response
+
+
+class RepairServiceSerializer(serializers.ModelSerializer):
+    customer=serializers.PrimaryKeyRelatedField(queryset=models.User.objects.all())
+    bike=serializers.PrimaryKeyRelatedField(queryset=models.Bike.objects.all())
+    
+    class Meta:
+        model=models.RepairServices
+        fields="__all__"
+        depth=2
