@@ -258,6 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   },
                                   label: const Text("Upload Passport"),
                                 ),
+                                const SizedBox(height: 10,),
                                 ElevatedButton.icon(
                                   icon: Icon(
                                     Icons.camera,
@@ -365,7 +366,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             "Register",
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.purple,
+                            primary: Colors.deepOrange,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 3),
                             textStyle: TextStyle(

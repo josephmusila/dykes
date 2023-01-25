@@ -10,12 +10,17 @@ import '../models/userModel.dart';
 
 Future<void> main() async {
   AuthService authservice = AuthService();
+  authservice.login(email: "m@gmail.com", password: "123er");
 
 }
 
 class BaseUrl {
   //local ip for dev purposes
-  final baseUrl = "http://169.254.177.161:8000/api/";
+  final baseUrl = "http://169.254.177.161:8080/api/";
+
+  // hosted ip for deployment
+
+  // final baseUrl = "http://musila.pythonanywhere.com/api/";
 
   String url() {
     return baseUrl;

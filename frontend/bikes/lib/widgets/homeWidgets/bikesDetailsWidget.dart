@@ -1,11 +1,26 @@
 import 'package:bikes/models/bikesDataModel.dart';
+import 'package:bikes/screens/rentingScreen.dart';
 import 'package:flutter/material.dart';
 
-class BikesDetailWidget extends StatelessWidget {
+import '../../models/userModel.dart';
+
+class BikesDetailWidget extends StatefulWidget {
   BikesDataModel bike;
+  UserDataModel? user;
 
-  BikesDetailWidget(this.bike);
+  BikesDetailWidget(this.bike,this.user);
 
+  @override
+  State<BikesDetailWidget> createState() => _BikesDetailWidgetState();
+}
+
+class _BikesDetailWidgetState extends State<BikesDetailWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("${widget.user?.user.phone} fin");
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,13 +41,13 @@ class BikesDetailWidget extends StatelessWidget {
                         color: Colors.white24,
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(bike.image))),
+                            image: NetworkImage(widget.bike.image))),
                   ),
                   Positioned(
                     top: 10,
                     left: 10,
                     child: Text(
-                      bike.name,
+                      widget.bike.name,
                       style: const TextStyle(
                         fontSize: 20,
                         backgroundColor: Colors.white60,
@@ -45,7 +60,7 @@ class BikesDetailWidget extends StatelessWidget {
                     bottom: 10,
                     right: 10,
                     child: Text(
-                      "Ksh ${bike.price}/day",
+                      "Ksh ${widget.bike.price}/day",
                       style: const TextStyle(
                         fontSize: 20,
                         backgroundColor: Colors.white60,
@@ -71,13 +86,13 @@ class BikesDetailWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          bike.description,
+                          widget.bike.description,
                           style: const TextStyle(
                             fontSize: 16,
                           ),
                         ),
                         Text(
-                          "Location: ${bike.owner.location}",
+                          "Location: ${widget.bike.owner.location}",
                           style: const TextStyle(
                             fontSize: 16,
                           ),
@@ -90,7 +105,11 @@ class BikesDetailWidget extends StatelessWidget {
                   flex: 1,
                   child: Column(
                     children: [
-                      ElevatedButton(onPressed: (){}, child: const Text("Book Now"),),
+                      ElevatedButton(onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                          return RentingScreen(widget.bike,widget.user);
+                        }));
+                      }, child: const Text("Book Now"),),
                     ],
                   ),
                 )

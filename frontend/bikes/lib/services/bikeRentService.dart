@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:bikes/models/bikesDataModel.dart';
+import 'package:bikes/models/rentingHistoryModel.dart';
 import 'package:bikes/services/authService.dart';
 import "package:http/http.dart" as http;
+import 'package:intl/intl.dart';
 
 Future<void> main() async {
   BikeRentalService bikeRentalService = BikeRentalService();
@@ -16,6 +18,10 @@ class BikeRentalService {
   final listAllBikesUrl=Uri.parse("${BaseUrl().baseUrl}bikes/list");
   final rentBikeUrl=Uri.parse("${BaseUrl().baseUrl}rentals/new");
   final searchBikeUrl=Uri.parse("${BaseUrl().baseUrl}bikes/search");
+
+  List<BikesDataModel> bikesData=[];
+  List locations=[];
+  List history=[];
 
 
   Future<dynamic> addBike(
@@ -38,12 +44,14 @@ class BikeRentalService {
   }
 
   Future<List<BikesDataModel>> listAllBikes() async{
-      List<BikesDataModel> bikesData=[];
+
       try {
         var response= await http.get(listAllBikesUrl);
         // print(bikesDataModelFromJson(json.decode(response.body)));
         // return bikesDataModelFromJson(json.decode(response.body));
         bikesData=bikesDataModelFromJson(response.body);
+
+
         return bikesData;
       }catch (e){
         throw Future.error(e);
@@ -51,21 +59,47 @@ class BikeRentalService {
 
   }
 
-  Future<dynamic> newRental() async{
+ Future<List> getlocations() async {
+    List bikes=[];
+   try {
+     var response= await http.get(listAllBikesUrl);
+     // print(bikesDataModelFromJson(json.decode(response.body)));
+     // return bikesDataModelFromJson(json.decode(response.body));
+     bikesData=bikesDataModelFromJson(response.body);
+     bikesData.forEach((element) {
+       bikes.add(element.owner.location);
+     });
+     print(locations);
+     return bikes;
+   }catch (e){
+     throw Future.error(e);
+   }
+  }
+
+  Future<dynamic> newRental(
+  {
+  required String customer,
+    required String bike_id,
+    required String owner,
+    required String rent_status,
+    required String date_of_return,
+    required String paid
+  }
+      ) async{
     var response=await http.post(rentBikeUrl,body:{
-      "customer":"1",
-      "bike":"1",
-      "date_of_renting":"10-10-2020",
-      "rent_status":"rented",
-      "date_of_return":"20-10-2020",
-      "paid":"True"
+      "customer":customer,
+      "bike":bike_id,
+      "owner":owner,
+      "rent_status":rent_status,
+      "date_of_return":date_of_return,
+      "paid":paid
     });
 
     print(response.body);
     return response;
   }
 
-  Future<List<BikesDataModel>> searchBike(String query) async{
+  Future<dynamic> searchBike(String query) async{
    try{
      var response = await http.get(Uri.parse("${BaseUrl().baseUrl}bikes/search/$query"));
      print(bikesDataModelFromJson(response.body));
@@ -73,5 +107,22 @@ class BikeRentalService {
    }catch (e){
      throw Future.error(e);
    }
+  }
+  
+  
+  Future<List<RentalHistory>> getRentalsHistory(int id) async{
+    List <RentalHistory>history=[];
+
+    try{
+      var response=await http.get(Uri.parse("${BaseUrl().baseUrl}rentals/history/$id"));
+      var myhistory = rentalHistoryFromJson(response.body);
+
+      myhistory.forEach((element) {
+        history.add(element);
+      });
+      return history;
+    }catch (e){
+      throw Future.error(e);
+    }
   }
 }

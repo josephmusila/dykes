@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubits/data_cubits/dataCubits.dart';
 import '../models/userModel.dart';
 import '../screens/accounts/customerAccount.dart';
 import '../screens/accounts/renterAccount.dart';
 import '../screens/loginPage.dart';
 import '../screens/registerPage.dart';
+import '../services/bikeRentService.dart';
 
 class NavDrawer extends StatelessWidget {
   UserDataModel? user;
@@ -77,7 +80,12 @@ class NavDrawer extends StatelessWidget {
                     : Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
-                            return user?.user.accountType == "Renter"? RenterAccount(user: user!) : CustomerAccount(user!);
+                            return user?.user.accountType == "Renter"? BlocProvider(
+                              create: (context) => BikesDataCubits(
+                                bikeRentalService: BikeRentalService(),
+                              ),
+                              child: RenterAccount(user: user!),
+                            ) : CustomerAccount(user!);
                           },
                         ),
                       );

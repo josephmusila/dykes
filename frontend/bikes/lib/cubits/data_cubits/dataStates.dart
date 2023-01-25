@@ -1,7 +1,7 @@
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
-import '../models/bikesDataModel.dart';
+import '../../models/bikesDataModel.dart';
 
 abstract class BikesData extends Equatable {}
 

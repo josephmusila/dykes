@@ -1,8 +1,9 @@
-import 'package:bikes/cubits/dataStates.dart';
+
 import 'package:bikes/models/bikesDataModel.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 
-import '../services/bikeRentService.dart';
+import '../../services/bikeRentService.dart';
+import 'dataStates.dart';
 
 class BikesDataCubits extends Cubit<BikesData>{
 
@@ -13,13 +14,14 @@ class BikesDataCubits extends Cubit<BikesData>{
     emit(BikesDataLoadingState());
   }
 
-  late final List<BikesDataModel> bikesData;
-  // List<BikesDataModel> searchedBike=[];
+    List<BikesDataModel> bikesData=[];
+  List<BikesDataModel> searchedBike=[];
 
   void getAllBikesData() async{
     try{
       emit(BikesDataLoadingState());
       bikesData=await bikeRentalService.listAllBikes();
+
       // print(bikesData);
       emit(BikesDataLoadedState(data: bikesData));
 
@@ -50,6 +52,21 @@ void searchBikeList(String query){
     final input=query.toLowerCase();
     return bikeName.contains(input);
   }).toList();
+}
+
+void getRentersBike(int id) async {
+
+    List<BikesDataModel> bikes= await bikeRentalService.listAllBikes();
+
+    bikes.forEach((element) {
+
+      if(element.owner.id == id) {
+        searchedBike.add(element);
+      }
+    });
+  print("${searchedBike.length } dvdfg");
+  emit(BikesDataLoadedState(data: bikes));
+
 
 
 }

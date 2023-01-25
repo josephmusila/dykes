@@ -1,13 +1,20 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:bikes/cubits/dataCubits.dart';
-import 'package:bikes/cubits/dataStates.dart';
+import 'package:bikes/cubits/data_cubits/dataCubits.dart';
+
 import 'package:bikes/models/bikesDataModel.dart';
+import 'package:bikes/models/userModel.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cubits/data_cubits/dataStates.dart';
+import '../../screens/rentingScreen.dart';
+
 class CustomImageSlider extends StatefulWidget {
+  UserDataModel? user;
+
+  CustomImageSlider(this.user);
   @override
   State<CustomImageSlider> createState() => _CustomImageSliderState();
 }
@@ -72,13 +79,34 @@ class _CustomImageSliderState extends State<CustomImageSlider> {
                           child: Text(
                             "Ksh ${bikes[index].price}/Day",
                             style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.deepOrange,
-                              fontWeight: FontWeight.bold,
-                              backgroundColor: Colors.white.withOpacity(0.7)
-                            ),
+                                fontSize: 20,
+                                color: Colors.deepOrange,
+                                fontWeight: FontWeight.bold,
+                                backgroundColor: Colors.white.withOpacity(0.7)),
                           ),
                         ),
+                        Positioned(
+                          bottom: 5,
+                          right : 5,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.blue.withOpacity(0.5),
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold
+
+                              )
+                            ),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return RentingScreen(bikes[index],widget.user);
+                              }));
+                            },
+                            child: const Text("Book Now"),
+                          ),
+                        )
                       ],
                     ),
                   ),

@@ -10,11 +10,13 @@ String bikesDataModelToJson(List<BikesDataModel> data) => json.encode(List<dynam
 
 class BikesDataModel {
   BikesDataModel({
+    required this.id,
     required this.owner,
     required this.name,
     required  this.description,
     required this.price,
     required this.image,
+    required this.rentStatus
   });
 
   Owner owner;
@@ -22,13 +24,17 @@ class BikesDataModel {
   String description;
   String price;
   dynamic image;
+  String?  rentStatus;
+  int id;
 
   factory BikesDataModel.fromJson(Map<String, dynamic> json) => BikesDataModel(
+    id: json["id"],
     owner: Owner.fromJson(json["owner"]),
     name: json["name"],
     description: json["description"],
     price: json["price"],
     image: json["image"],
+    rentStatus: json["rent_status"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +43,7 @@ class BikesDataModel {
     "description": description,
     "price": price,
     "image": image,
+    "rent_status":rentStatus
   };
 }
 

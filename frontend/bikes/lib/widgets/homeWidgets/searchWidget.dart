@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubits/dataCubits.dart';
+import '../../cubits/data_cubits/dataCubits.dart';
 import '../../models/bikesDataModel.dart';
 
 class SearchBike extends StatefulWidget {
+  String keyword;
+
+  SearchBike(this.keyword);
 
   @override
   State<SearchBike> createState() => _SearchBikeState();
@@ -74,7 +77,7 @@ var query=TextEditingController();
                               borderRadius:
                                   BorderRadius.all(Radius.circular(32.0)),
                             ),
-                            suffixIcon: Icon(Icons.search),
+                            // suffixIcon: Icon(Icons.search),
                           ),
                         ),
                       ),

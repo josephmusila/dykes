@@ -22,6 +22,20 @@ class _AddBikeState extends State<AddBike> {
   var description = TextEditingController();
   var price = TextEditingController();
   var imageFile;
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snack(String title,Color color){
+    return ScaffoldMessenger.of(context).showSnackBar(
+
+      SnackBar(
+        content:  Text(title),
+        backgroundColor: color,
+        dismissDirection: DismissDirection.up,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +126,7 @@ class _AddBikeState extends State<AddBike> {
                   child: Column(
                     children: [
                       ElevatedButton.icon(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.upload,
                         ),
                         onPressed: () {
@@ -121,7 +135,7 @@ class _AddBikeState extends State<AddBike> {
                         label: const Text("Upload bike Image"),
                       ),
                       ElevatedButton.icon(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.camera,
                         ),
                         onPressed: () {
@@ -133,12 +147,12 @@ class _AddBikeState extends State<AddBike> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(right: 5),
+                  margin: const EdgeInsets.only(right: 5),
                   height: 80,
                   width: 80,
                   color: Colors.white,
                   child: imageFile == null
-                      ? Center(
+                      ? const Center(
                           child: Text(
                             "No Image Selected",
                             textAlign: TextAlign.center,
@@ -157,25 +171,30 @@ class _AddBikeState extends State<AddBike> {
             const Divider(color: Colors.white),
             ElevatedButton(
                 onPressed: () async {
+                  // imageFile.path
                   try {
-                    var response = await bikeRentalService.addBike(
-                      owner: widget.ownerId,
-                      name: name.text,
-                      description: description.text,
-                      price: price.text,
-                      image: imageFile.path,
-                    );
-                    print(json.decode(response));
+                    if(name.text.isEmpty || description.text.isEmpty || price.text.isEmpty  ){
+                      snack("Fill the empty fields", Colors.red);
+                    }else if(imageFile == null){
+                      snack("Please Add an Image", Colors.red);
+                    }
+
+                    else{
+                      var response = await bikeRentalService.addBike(
+                        owner: widget.ownerId,
+                        name: name.text,
+                        description: description.text,
+                        price: price.text,
+                        image: imageFile.path,
+                      );
+                      // print(json.decode(response));
+
+                      snack("Bike Added Successfully", Colors.green);
+                      Navigator.of(context).pop();
+                    }
                   }catch (e){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      // ignore: prefer_const_constructors
-                      SnackBar(
-                        content:  Text(e.toString()),
-                        backgroundColor: const Color.fromARGB(255, 253, 2, 30),
-                        dismissDirection: DismissDirection.up,
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
+                    snack(e.toString(), Colors.red);
+
                   }
                 },
 
